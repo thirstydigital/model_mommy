@@ -317,6 +317,44 @@ class Mommy(object):
             generator = self.type_mapping[ContentType]
         elif field.__class__ in self.type_mapping:
             generator = self.type_mapping[field.__class__]
+        elif isinstance(field, ManyToManyField):
+            generator = __m2m_generator
+        elif isinstance(field, BooleanField):
+            generator = generators.gen_boolean
+        elif isinstance(field, ContentType):
+            generator = generators.gen_content_type
+        elif isinstance(field, DateField):
+            generator = generators.gen_date
+        elif isinstance(field, DateTimeField):
+            generator = generators.gen_datetime
+        elif isinstance(field, DecimalField):
+            generator = generators.gen_decimal
+        elif isinstance(field, EmailField):
+            generator = generators.gen_email
+        elif isinstance(field, FileField):
+            generator = generators.gen_file_field
+        elif isinstance(field, FloatField):
+            generator = generators.gen_float
+        elif isinstance(field, ImageField):
+            generator = generators.gen_image_field
+        elif isinstance(field, (BigIntegerField, IntegerField, SmallIntegerField)):
+            generator = generators.gen_integer
+        elif isinstance(field, SlugField):
+            generator = generators.gen_slug
+        elif isinstance(field, CharField):
+            generator = generators.gen_string
+        elif isinstance(field, TextField):
+            generator = generators.gen_text
+        elif isinstance(field, TimeField):
+            generator = generators.gen_time
+        elif isinstance(field, URLField):
+            generator = generators.gen_url
+        elif isinstance(field, (PositiveIntegerField, PositiveSmallIntegerField)):
+            generator = lambda: generators.gen_integer(0)
+        elif isinstance(field, ForeignKey):
+            generator = make
+        elif isinstance(field, OneToOneField):
+            generator = make
         else:
             raise TypeError('%s is not supported by mommy.' % field.__class__)
 
